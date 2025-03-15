@@ -12,9 +12,15 @@ var node = await JsonNode.ParseAsync(stream!);
 
 var streamDeclarations = node!["properties"]!["streamDeclarations"];
 
+Console.WriteLine("components:");
+Console.WriteLine("\tschema:");
+
 foreach (var declaration in streamDeclarations!.AsObject())
 {
-    Console.WriteLine("***{0}***", declaration.Key);
+    Console.WriteLine("\t\t{0}:", declaration.Key);
+    Console.WriteLine("\t\t\ttype: object");
+    Console.WriteLine("\t\t\tadditionalProperties: false");
+    Console.WriteLine("\t\t\tproperties:");
 
     var columns_json = declaration.Value!["columns"];
 
@@ -22,7 +28,9 @@ foreach (var declaration in streamDeclarations!.AsObject())
 
     foreach(var column in columns)
     {
-        Console.WriteLine("\t{0}/{1}/{2}", column.name, column.type, column.description);
+        Console.WriteLine("\t\t\t\t{0}:", column.name);
+        Console.WriteLine("\t\t\t\t\ttype: {0}", column.type);
+        Console.WriteLine("\t\t\t\t\tdescription: {0}", column.description);
     }
 }
 
