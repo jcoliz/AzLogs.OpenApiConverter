@@ -10,6 +10,25 @@ var stream = assy.GetManifestResourceStream(name!);
 
 var node = await JsonNode.ParseAsync(stream!);
 
+// Collect data flows for later inclusion as schema descriptions
+
+var transformKqls = new Dictionary<string, string>();
+
+var dataFlows = node!["properties"]!["dataFlows"];
+
+foreach (var dataFlow in dataFlows!.AsArray())
+{
+    var transformKql = dataFlow!["transformKql"].AsValue().ToString();
+    var streams = dataFlow!["streams"].AsArray();
+
+    foreach (var oneStream in streams!)
+    {
+        var streamName = oneStream.AsValue().ToString();
+
+        transformKqls[streamName] = transformKql;
+    }
+}
+
 var streamDeclarations = node!["properties"]!["streamDeclarations"];
 
 Console.WriteLine("components:");
@@ -20,6 +39,12 @@ foreach (var declaration in streamDeclarations!.AsObject())
     Console.WriteLine("    {0}:", declaration.Key);
     Console.WriteLine("      type: object");
     Console.WriteLine("      additionalProperties: false");
+
+    if (transformKqls.TryGetValue(declaration.Key, out var kqls))
+    {
+        Console.WriteLine("      description: {0}", kqls);        
+    }
+
     Console.WriteLine("      properties:");
 
     var columns_json = declaration.Value!["columns"];
