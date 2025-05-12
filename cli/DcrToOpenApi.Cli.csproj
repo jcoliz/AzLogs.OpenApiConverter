@@ -7,9 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-<ItemGroup>
-  <Content Remove="dcr.json" />
-  <EmbeddedResource Include="dcr.json" />
-</ItemGroup>
-
 </Project>

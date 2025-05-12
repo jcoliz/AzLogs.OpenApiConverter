@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 
-var assy = Assembly.GetExecutingAssembly();
-var names = assy.GetManifestResourceNames();
-var name = names.Where(x => x.EndsWith(".dcr.json")).FirstOrDefault();
-var stream = assy.GetManifestResourceStream(name!);
+var name = args[0];
+var stream = File.OpenRead(name);
 
 var node = await JsonNode.ParseAsync(stream!);
 
@@ -31,6 +27,10 @@ foreach (var dataFlow in dataFlows!.AsArray())
 
 var streamDeclarations = node!["properties"]!["streamDeclarations"];
 
+Console.WriteLine("openapi: 3.1.0");
+Console.WriteLine("info:");
+Console.WriteLine("  title: 'Generated API'");
+Console.WriteLine("  version: 0.0.1");
 Console.WriteLine("components:");
 Console.WriteLine("  schema:");
 
