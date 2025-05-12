@@ -32,7 +32,7 @@ Console.WriteLine("info:");
 Console.WriteLine("  title: 'Generated API'");
 Console.WriteLine("  version: 0.0.1");
 Console.WriteLine("components:");
-Console.WriteLine("  schema:");
+Console.WriteLine("  schemas:");
 
 foreach (var declaration in streamDeclarations!.AsObject())
 {
